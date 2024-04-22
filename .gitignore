@@ -1,6 +1,6 @@
 # virtual environment
 env
-
+venv
 # any pycaches
 __pycache__/
 

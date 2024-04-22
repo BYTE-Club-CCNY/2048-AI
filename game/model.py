@@ -17,7 +17,7 @@ class Linear_QNet(nn.Module):
 
         def save(self, file_name="model.pth"):
             ###
-
+            pass
 class QTrainer:
 # train_step function, init function
-    
+    pass

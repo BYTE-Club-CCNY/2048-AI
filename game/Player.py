@@ -1,6 +1,6 @@
-from Board import Board
-from Game import Game
-import colors as c
+from game.config.Board import Board
+from game.config.Game import Game
+from game.config import colors as c
 import tkinter.messagebox as messagebox
 
 

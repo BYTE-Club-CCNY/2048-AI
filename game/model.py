@@ -21,3 +21,4 @@ class Linear_QNet(nn.Module):
 class QTrainer:
 # train_step function, init function
     pass
+   

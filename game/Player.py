@@ -12,6 +12,8 @@ class Player:
         self.game_over = False
         self.won = False
         self.keep_playing = False
+        self.frame_iteration = 0
+        self.max_block = 1
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
@@ -20,6 +22,7 @@ class Player:
         self.add_start_cells()
         self.game.draw()
         self.game.root.bind('<Key>', self.handle_key_press)
+        # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 
     def add_start_cells(self):
@@ -30,9 +33,13 @@ class Player:
         return self.board.has_empty_cells() or self.board.mergeable()
 
     # Determine action after key press
-    def handle_key_press(self, event):
+    def handle_key_press(self, event, action):
+        self.frame_iteration += 1
+        reward = 0
         if self.is_game_over():
-            return
+            reward = -15
+            return reward
+        # perhaps we can also return a value that represents highest block that we were able to reach?
         self.board.remove_checks()
         key_value = event.keysym
 
@@ -49,28 +56,26 @@ class Player:
 
         self.game.draw()
         if self.board.found_2048():
-            self.game_win_message()
-            if not self.keep_playing:
-                return
+            pass
+            # we want to note down that we have reached 2048 for stats.
 
         if self.board.moved:
             self.board.generate_random_cell()
+            reward = 5
 
         self.game.draw()
         if not self.can_move():
             self.game_over = True
-            #self.game_over_message() Not needed anymore
+            # self.game_over_message() Not needed anymore
             self.reset()
 
     def game_win_message(self):
         if not self.won:
             self.won = True
-            if messagebox.askyesno('2048', 'You Win!\n'
-                                           'Are you going to continue the 2048 game?'):
-                self.keep_playing = True
+            self.keep_playing = True
 
-    #def game_over_message(self):
-     #   messagebox.showinfo('2048', 'Game Over!')
+# def game_over_message(self):
+    # messagebox.showinfo('2048', 'Game Over!')
     # Above function is no longer needed, the game will auto-reset and AI plays again
 
     def reset(self):

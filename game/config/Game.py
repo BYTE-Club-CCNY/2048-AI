@@ -43,3 +43,19 @@ class Game:
                     self.cell_labels[i][j].configure(
                         text=cell_text,
                         bg=bg_color, fg=fg_color)
+
+    def reset(self):
+        # Reset the board's state
+        self.board.reset()
+
+        # Update the UI to reflect the cleared board
+        for i in range(self.board.dim):
+            for j in range(self.board.dim):
+                self.cell_labels[i][j].configure(
+                    text='',
+                    bg=c.EMPTY_CELL_COLOR,
+                    fg=c.CELL_COLOR_DICT.get('default', 'black')  # Assuming a default foreground color
+                )
+
+        # Redraw the board to ensure the UI is updated
+        self.draw()

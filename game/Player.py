@@ -29,6 +29,7 @@ class Player:
     def can_move(self):
         return self.board.has_empty_cells() or self.board.mergeable()
 
+    # Determine action after key press
     def handle_key_press(self, event):
         if self.is_game_over():
             return
@@ -58,7 +59,8 @@ class Player:
         self.game.draw()
         if not self.can_move():
             self.game_over = True
-            self.game_over_message()
+            #self.game_over_message() Not needed anymore
+            self.reset()
 
     def game_win_message(self):
         if not self.won:
@@ -67,9 +69,22 @@ class Player:
                                            'Are you going to continue the 2048 game?'):
                 self.keep_playing = True
 
-    def game_over_message(self):
-        messagebox.showinfo('2048', 'Game Over!')
+    #def game_over_message(self):
+     #   messagebox.showinfo('2048', 'Game Over!')
+    # Above function is no longer needed, the game will auto-reset and AI plays again
 
+    def reset(self):
+        # Reset the board state
+        self.board.reset()
+        # Reset the game state and any necessary UI components
+        self.game.reset()
+        # Reset the player's game state variables
+        self.start_cells_num = 2
+        self.game_over = False
+        self.won = False
+        self.keep_playing = False
+
+    # Player Actions left right up down
     def left(self):
         self.board.slide_cells()
         self.board.combine_cells()

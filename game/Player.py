@@ -47,7 +47,7 @@ class Player:
             self.up()
         elif key_value in c.DOWN_KEYS:
             self.down()
-        elif key_value in c.LEFT_KEYS:0
+        elif key_value in c.LEFT_KEYS:
             self.left()
         elif key_value in c.RIGHT_KEYS:
             self.right()

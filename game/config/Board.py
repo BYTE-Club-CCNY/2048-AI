@@ -105,3 +105,14 @@ class Board:
                 if self.cells[i][j] == self.cells[i + 1][j]:
                     return True
         return False
+
+    def reset(self):
+        self.cells = self.generate_empty_board()
+        self.slided = False
+        self.moved = False
+        self.combined = False
+        self.current_score = 0
+        self.generate_random_cell()
+
+        """def __init__(self, dim):
+            self.dim = dim"""

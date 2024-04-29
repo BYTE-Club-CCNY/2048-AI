@@ -1,6 +1,6 @@
-from Board import Board
+from game.config.Board import Board
 from Player import Player
-from Game import Game
+from game.config.Game import Game
 
 
 def main():

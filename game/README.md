@@ -2,10 +2,20 @@
 
 
 ## Todo:
-### Player.py: (*Note this is our agent*)
+### Player.py:
 - ~~Add reward variable~~
-- Have the AI control the game through actions, instead of key-user input
-- Figuring out how to have agent determine current state of game iteration
+- ~~Have the AI control the game through actions, instead of key-user input~~
+
+### agent.py:
+- Implementing Bellman Equation: # of games, epsilon, gamma
+- Implementing both short and long term memory
+- Epochs
+- Save and load model function based on epochs
+- Get state function to determine the next state
+- Remember function, which appends new state to a deque of states
+- Train on short and long term memory
+- Give way to actions based on exploration and later exploitation
+- Basic train function
 
 ### model.py: (*This part is pretty trivial once the agent is fully designed*)
 - Complete initialization of a Qnet module subclass

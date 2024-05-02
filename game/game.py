@@ -1,10 +1,19 @@
 from game.config.Board import Board
-from game.config.Game import Game
+from game.config.GameConfig import Game
 from game.config import colors as c
+from enum import Enum
 import tkinter.messagebox as messagebox
+import numpy as np
 
 
-class Player:
+class Direction(Enum):
+    UP = 1
+    DOWN = 2
+    LEFT = 3
+    RIGHT = 4
+
+
+class _2048GameAI:
     def __init__(self, board: Board, game: Game):
         self.board = board
         self.game = game
@@ -33,7 +42,19 @@ class Player:
         return self.board.has_empty_cells() or self.board.mergeable()
 
     # Determine action after key press
-    def handle_key_press(self, event, action):
+    def handle_key_press(self, action):
+        # actions: [up, down, left, right]
+        clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
+        idx = clock_wise.index(self.direction)
+        if np.array_equal(action, [1, 0, 0, 0]):  # Action is slide right
+            new_dir = clock_wise[0]
+        if np.array_equal(action, [0, 1, 0, 0]):  # Action is slide down
+            new_dir = clock_wise[1]
+        if np.array_equal(action, [0, 0, 1, 0]):
+            new_dir = clock_wise[2]
+        else:
+            new_dir = clock_wise[3]
+
         self.frame_iteration += 1
         reward = 0
         if self.is_game_over():
@@ -41,18 +62,15 @@ class Player:
             return reward
         # perhaps we can also return a value that represents highest block that we were able to reach?
         self.board.remove_checks()
-        key_value = event.keysym
 
-        if key_value in c.UP_KEYS:
+        if self.direction == Direction.UP:
             self.up()
-        elif key_value in c.DOWN_KEYS:
+        elif self.direction == Direction.DOWN:
             self.down()
-        elif key_value in c.LEFT_KEYS:
+        elif self.direction == Direction.LEFT:
             self.left()
-        elif key_value in c.RIGHT_KEYS:
+        elif self.direction == Direction.RIGHT:
             self.right()
-        else:
-            pass
 
         self.game.draw()
         if self.board.found_2048():

@@ -45,33 +45,41 @@ class Agent:
     def get_action(self, state):
         pass
 
-    def train(epochs, load_model=False):  # NOTE merges are treated like "scores" in snakeAI game
-        plot_merges = []
-        plot_max_tile = []
-        total_merges = 0
-        record = 0
-        agent = Agent()  # agent = Agent(load_model=load_model) later
-        game = _2048GameAI()
-        while True:
-            state_old = agent.get_state(game) # get old state
-            final_move = agent.get_action(state_old) # calculate move based on old state
-            reward, done, merges = game.handle_key_press(final_move) # Perform the move
-            state_new = agent.get_state(game) # retrieve the new state, use for memory
+def train(epochs, load_model=False):  # NOTE merges are treated like "scores" in snakeAI game
+    plot_merges = []
+    plot_max_tile = []
+    total_merges = 0
+    record = 0
+    agent = Agent()  # agent = Agent(load_model=load_model) later
 
-            # training the short memory:
-            agent.train_short_memory(state_old, final_move, reward, state_new, done)
+    dim = 4
+    board = Board(dim)
+    game = Game(board)
+    player = _2048GameAI(board, game)
+    player.play()
 
-            # remember:
-            agent.remember(state_old, final_move, reward, state_new, done)
+    while True:
+        state_old = agent.get_state(game) # get old state
+        final_move = agent.get_action(state_old) # calculate move based on old state
+        reward, done, merges = game.handle_key_press(final_move) # Perform the move
+        state_new = agent.get_state(game) # retrieve the new state, use for memory
 
-            if done: # basically if the game is over. we reset game here
-                # training the long memory:
-                game.reset()
-                agent.num_games += 1
-                agent.train_long_memory()
-                if merges > record:
-                    record = merges
+        # training the short memory:
+        agent.train_short_memory(state_old, final_move, reward, state_new, done)
 
-                # TODO: plotting merges (score) on plot
-        pass
+        # remember:
+        agent.remember(state_old, final_move, reward, state_new, done)
 
+        if done: # basically if the game is over. we reset game here
+            # training the long memory:
+            game.reset()
+            agent.num_games += 1
+            agent.train_long_memory()
+            if merges > record:
+                record = merges
+
+            # TODO: plotting merges (score) on plot
+    pass
+
+if __name__ == '__main__':
+    train(epoch=100, load_model=True)

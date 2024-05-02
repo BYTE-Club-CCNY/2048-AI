@@ -10,8 +10,11 @@ To run the game, make sure your python installation has TKinter support.
 
 ## TODO
 
-- Start implementing the AI
-- Figure out a way to get the AI to play the game.
+- Building model.py
+- Making sure agent.py runs well with model.py after building model
+- Testing and plotting data
+- Fine-tuning variables in agent for better performance
+- Implementing search algorithms so AI is able to discover best paths to achieve 2048 or higher
 
 Feel free to add more to the README with any TODO's or documentation.
 

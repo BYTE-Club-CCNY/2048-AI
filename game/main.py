@@ -1,5 +1,5 @@
 from game.config.Board import Board
-from game import Player
+from game import _2048GameAI, Direction
 from game.config.GameConfig import Game
 
 
@@ -7,7 +7,7 @@ def main():
     dim = 4
     board = Board(dim)
     game = Game(board)
-    player = Player(board, game)
+    player = _2048GameAI(board, game)
     player.play()
 
 

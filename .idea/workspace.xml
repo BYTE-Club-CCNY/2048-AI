@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ef06a64-ed96-45b9-9ab2-1e988a16d810" name="Changes" comment="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
-      <change afterPath="$PROJECT_DIR$/game/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/game/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/config/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/config/GameConfig.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +45,7 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "model",
+    "git-widget-placeholder": "agent",
     "last_opened_file_path": "C:/Users/Noppo/GitHub Repos/snake-ai-pytorch",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -120,7 +114,7 @@
       <workItem from="1714433807252" duration="7000" />
       <workItem from="1714578852226" duration="133000" />
       <workItem from="1714581706359" duration="7000" />
-      <workItem from="1714659379570" duration="9456000" />
+      <workItem from="1714659379570" duration="10025000" />
     </task>
     <task id="LOCAL-00001" summary="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
       <option name="closed" value="true" />

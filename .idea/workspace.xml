@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ef06a64-ed96-45b9-9ab2-1e988a16d810" name="Changes" comment="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +115,7 @@
       <workItem from="1714433807252" duration="7000" />
       <workItem from="1714578852226" duration="133000" />
       <workItem from="1714581706359" duration="7000" />
-      <workItem from="1714659379570" duration="10025000" />
+      <workItem from="1714659379570" duration="13435000" />
     </task>
     <task id="LOCAL-00001" summary="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
       <option name="closed" value="true" />

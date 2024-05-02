@@ -1,8 +1,6 @@
-from game.config.Board import Board
-from game.config.GameConfig import Game
-from game.config import colors as c
+from config.Board import Board
+from config.GameConfig import Game
 from enum import Enum
-import tkinter.messagebox as messagebox
 import numpy as np
 
 

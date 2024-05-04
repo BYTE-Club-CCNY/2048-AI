@@ -9,6 +9,7 @@ class Direction(Enum):
     DOWN = 2
     LEFT = 3
     RIGHT = 4
+    NONE = 5
 
 
 class _2048GameAI:
@@ -21,6 +22,7 @@ class _2048GameAI:
         self.keep_playing = False
         self.frame_iteration = 0
         self.max_block = 1
+        self.direction = Direction.NONE
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)

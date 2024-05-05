@@ -2,6 +2,7 @@ from config.Board import Board
 from config.GameConfig import Game
 from enum import Enum
 import numpy as np
+import agent
 
 
 class Direction(Enum):
@@ -30,7 +31,7 @@ class _2048GameAI:
     def play(self):
         self.add_start_cells()
         self.game.draw()
-        self.game.root.bind('<Key>', self.handle_key_press)
+        self.game.root.bind(agent.get_action, self.handle_key_press)
         # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 
@@ -48,14 +49,13 @@ class _2048GameAI:
         idx = clock_wise.index(self.direction)
         if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
             new_dir = clock_wise[0]
-        if np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
+        elif np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
             new_dir = clock_wise[1]
-        if np.array_equal(action, [0, 0, 1, 0, 0]):
+        elif np.array_equal(action, [0, 0, 1, 0, 0]): # Action is slide left
             new_dir = clock_wise[2]
-        if np.array_equal(action, [0, 0, 0, 1, 0]):
+        else: # Action is slide up
             new_dir = clock_wise[3]
-        else:
-            return
+        
 
         self.frame_iteration += 1
         reward = 0

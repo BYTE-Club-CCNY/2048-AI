@@ -2,7 +2,6 @@ from config.Board import Board
 from config.GameConfig import Game
 from enum import Enum
 import numpy as np
-import agent
 
 
 class Direction(Enum):
@@ -31,7 +30,7 @@ class _2048GameAI:
     def play(self):
         self.add_start_cells()
         self.game.draw()
-        self.game.root.bind(agent.get_action, self.handle_key_press)
+        self.game.root.bind('<Key>', self.handle_key_press)
         # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 

@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7ef06a64-ed96-45b9-9ab2-1e988a16d810" name="Changes" comment="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/game/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +48,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "model",
-    "last_opened_file_path": "C:/Users/Noppo/GitHub Repos/snake-ai-pytorch",
+    "last_opened_file_path": "C:/Users/Noppo/GitHub Repos/2048-AI",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -166,6 +165,7 @@
       <workItem from="1714578852226" duration="133000" />
       <workItem from="1714581706359" duration="7000" />
       <workItem from="1714659379570" duration="9456000" />
+      <workItem from="1714873716545" duration="134000" />
     </task>
     <task id="LOCAL-00001" summary="- added reward variable which is determined by game over, or a successful merge; determine reward when game win later.">
       <option name="closed" value="true" />
@@ -189,6 +189,6 @@
     <SUITE FILE_PATH="coverage/2048_AI$Player.coverage" NAME="Player Coverage Results" MODIFIED="1714411187346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/2048_AI$main.coverage" NAME="main Coverage Results" MODIFIED="1714866359106" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/2048_AI$game.coverage" NAME="game Coverage Results" MODIFIED="1714866468283" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/2048_AI$agent.coverage" NAME="agent Coverage Results" MODIFIED="1714867180075" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/2048_AI$agent.coverage" NAME="agent Coverage Results" MODIFIED="1714867482897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
   </component>
 </project>

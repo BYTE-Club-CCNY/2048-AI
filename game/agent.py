@@ -22,7 +22,7 @@ class Agent:
         self.epsilon = 0  # control the randomness. represents tradeoff between exploration VS exploitation
         self.gamma = 0.9  # discount rate, adjust short-term and long-term rewards
         self.memory = deque(maxlen=MAX_MEMORY)  # This should be self-explanatory...
-        self.model = Linear_QNet(3,256,4)  # input size, hidden layer size, output size
+        self.model = Linear_QNet(22, 256, 4)  # input size, hidden layer size, output size
         self.trainer = QTrainer(self.model, lr=LEARNING_RATE, gamma=self.gamma)
 
 
@@ -151,6 +151,7 @@ def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated l
             # mean_score = total_score / agent.num_games
             plot_max_tile.append(record)
             plot(plot_merges, plot_max_tile)
+
 
 if __name__ == '__main__':
     dim = 4

@@ -25,7 +25,6 @@ class Agent:
         self.model = Linear_QNet(22, 256, 4)  # input size, hidden layer size, output size
         self.trainer = QTrainer(self.model, lr=LEARNING_RATE, gamma=self.gamma)
 
-
     # TODO: helper functions that identify availability of left, up, down, right movements
 
     def get_state(self, game):
@@ -111,7 +110,7 @@ class Agent:
         # this eventually brings us to exploitation rather than exploration
         else:
             state_0 = torch.tensor(state, dtype=torch.float)
-            prediction = self.model(state_0)
+            prediction = self.model.predict(state_0)
             move = torch.argmax(prediction).item()
             final_move[move] = 1  # prediction with exploitation once we are not exploring anymore
         return final_move
@@ -139,7 +138,7 @@ def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated l
 
         if done:  # basically if the game is over. we reset game here
             # training the long memory:
-            game.reset()
+            self.game.reset()
             agent.num_games += 1
             agent.train_long_memory()
             if merges > record:
@@ -151,7 +150,6 @@ def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated l
             # mean_score = total_score / agent.num_games
             plot_max_tile.append(record)
             plot(plot_merges, plot_max_tile)
-
 
 if __name__ == '__main__':
     dim = 4

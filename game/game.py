@@ -9,6 +9,7 @@ class Direction(Enum):
     DOWN = 2
     LEFT = 3
     RIGHT = 4
+    NONE = 5
 
 
 class _2048GameAI:
@@ -21,6 +22,7 @@ class _2048GameAI:
         self.keep_playing = False
         self.frame_iteration = 0
         self.max_block = 1
+        self.direction = Direction.NONE
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
@@ -42,16 +44,18 @@ class _2048GameAI:
     # Determine action after key press
     def handle_key_press(self, action):
         # actions: [up, down, left, right]
-        clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
+        clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.NONE]
         idx = clock_wise.index(self.direction)
-        if np.array_equal(action, [1, 0, 0, 0]):  # Action is slide right
+        if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
             new_dir = clock_wise[0]
-        if np.array_equal(action, [0, 1, 0, 0]):  # Action is slide down
+        if np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
             new_dir = clock_wise[1]
-        if np.array_equal(action, [0, 0, 1, 0]):
+        if np.array_equal(action, [0, 0, 1, 0, 0]):
             new_dir = clock_wise[2]
-        else:
+        if np.array_equal(action, [0, 0, 0, 1, 0]):
             new_dir = clock_wise[3]
+        else:
+            return
 
         self.frame_iteration += 1
         reward = 0

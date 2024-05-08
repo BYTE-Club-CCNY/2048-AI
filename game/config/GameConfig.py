@@ -1,5 +1,5 @@
 import tkinter as tk
-from game.config import colors as c
+from config import colors as c
 
 
 class Game:

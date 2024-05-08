@@ -1,9 +1,12 @@
 import torch
 import random
 from config.Board import Board
+from config.GameConfig import Game
 import numpy as np
 from game import _2048GameAI, Direction
 from collections import deque
+from model import Linear_QNet, QTrainer
+from helper import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -17,11 +20,10 @@ class Agent:
         self.game = game
         self.num_games = 0
         self.epsilon = 0  # control the randomness. represents tradeoff between exploration VS exploitation
-        self.gamma = 0  # discount rate, adjust short-term and long-term rewards
+        self.gamma = 0.9  # discount rate, adjust short-term and long-term rewards
         self.memory = deque(maxlen=MAX_MEMORY)  # This should be self-explanatory...
-        self.model = None
-        self.trainer = None
-        pass
+        self.model = Linear_QNet(22, 256, 4)  # input size, hidden layer size, output size
+        self.trainer = QTrainer(self.model, lr=LEARNING_RATE, gamma=self.gamma)
 
     # TODO: helper functions that identify availability of left, up, down, right movements
 
@@ -114,18 +116,19 @@ class Agent:
         return final_move
 
 
-def train(self, epochs, load_model=False):  # NOTE merges are treated like "scores" in snakeAI game
+def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated like "scores" in snakeAI game
     plot_merges = []
     plot_max_tile = []
     total_merges = 0
     record = 0
-    agent = Agent()  # agent = Agent(load_model=load_model) later
+    game = _2048GameAI(board, _game)
+    agent = Agent(board=board, game=_game)  # agent = Agent(load_model=load_model) later
 
     while True:
-        state_old = agent.get_state(self.game)  # get old state
+        state_old = agent.get_state(game)  # get old state
         final_move = agent.get_action(state_old)  # calculate move based on old state
         reward, done, merges = game.handle_key_press(final_move)  # Perform the move
-        state_new = agent.get_state(self.game)  # retrieve the new state, use for memory
+        state_new = agent.get_state(game)  # retrieve the new state, use for memory
 
         # training the short memory:
         agent.train_short_memory(state_old, final_move, reward, state_new, done)
@@ -142,8 +145,15 @@ def train(self, epochs, load_model=False):  # NOTE merges are treated like "scor
                 record = merges
 
             # TODO: plotting merges (score) on plot
-    pass
-
+            plot_merges.append(merges)
+            total_score += merges
+            # mean_score = total_score / agent.num_games
+            plot_max_tile.append(record)
+            plot(plot_merges, plot_max_tile)
 
 if __name__ == '__main__':
-    train(epoch=100, load_model=True)
+    dim = 4
+    board = Board(dim)
+    game = Game(board)
+    player = _2048GameAI(board, game)
+    train(epochs=100, load_model=True, board=board, _game=game)

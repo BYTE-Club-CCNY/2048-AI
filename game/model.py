@@ -13,9 +13,10 @@ class Linear_QNet(nn.Module):
         self.linear2 = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
-        x = F.relu(F.linear(self.linear1(x)))
-        x = F.linear(self.linear2(x))
+        x = F.relu(self.linear1(x))  # Apply ReLU activation after the linear transformation
+        x = self.linear2(x)  # Another linear transformation without activation
         return x
+
 
     def save(self, epoch, file_name="model"):
         # create a directory to store the mode

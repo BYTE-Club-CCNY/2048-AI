@@ -110,7 +110,7 @@ class Agent:
         # this eventually brings us to exploitation rather than exploration
         else:
             state_0 = torch.tensor(state, dtype=torch.float)
-            """ prediction = self.model.predict(state_0) """
+            prediction = self.model(state_0)
             move = torch.argmax(prediction).item()
             final_move[move] = 1  # prediction with exploitation once we are not exploring anymore
         return final_move
@@ -127,7 +127,7 @@ def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated l
     while True:
         state_old = agent.get_state(game)  # get old state
         final_move = agent.get_action(state_old)  # calculate move based on old state
-        reward, done, merges = game.handle_key_press(final_move)  # Perform the move
+        reward, done, merges = game.play_step(final_move)  # Perform the move
         state_new = agent.get_state(game)  # retrieve the new state, use for memory
 
         # training the short memory:

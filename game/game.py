@@ -22,7 +22,7 @@ class _2048GameAI:
         self.keep_playing = False
         self.frame_iteration = 0
         self.max_block = 1
-        self.direction = Direction.NONE
+        self.direction = Direction.DOWN
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
@@ -42,17 +42,17 @@ class _2048GameAI:
         return self.board.has_empty_cells() or self.board.mergeable()
 
     # Determine action after key press
-    def handle_key_press(self, action):
+    """ def handle_key_press(self, action):
         # actions: [up, down, left, right]
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.NONE]
         idx = clock_wise.index(self.direction)
         if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
             new_dir = clock_wise[0]
-        if np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
+        elif np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
             new_dir = clock_wise[1]
-        if np.array_equal(action, [0, 0, 1, 0, 0]):
+        elif np.array_equal(action, [0, 0, 1, 0, 0]):
             new_dir = clock_wise[2]
-        if np.array_equal(action, [0, 0, 0, 1, 0]):
+        elif np.array_equal(action, [0, 0, 0, 1, 0]):
             new_dir = clock_wise[3]
         else:
             return
@@ -87,7 +87,55 @@ class _2048GameAI:
         if not self.can_move():
             self.game_over = True
             # self.game_over_message() Not needed anymore
+            self.reset() """
+
+    def _move(self, action):
+        clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.NONE]
+        idx = clock_wise.index(self.direction)
+        if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
+            new_dir = clock_wise[0]
+        elif np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
+            new_dir = clock_wise[1]
+        elif np.array_equal(action, [0, 0, 1, 0, 0]):
+            new_dir = clock_wise[2]
+        elif np.array_equal(action, [0, 0, 0, 1, 0]):
+            new_dir = clock_wise[3]
+        else:
+            return
+
+        if self.direction == Direction.UP:
+            self.up()
+        elif self.direction == Direction.DOWN:
+            self.down()
+        elif self.direction == Direction.LEFT:
+            self.left()
+        elif self.direction == Direction.RIGHT:
+            self.right()
+
+    def play_step(self, action):
+        self._move(action)
+
+        self.frame_iteration += 1
+        reward = 0
+        if self.is_game_over():
+            reward = -15
+            return reward
+
+        self.game.draw()
+        if self.board.found_2048():
+            pass
+            # we want to note down that we have reached 2048 for stats.
+
+        if self.board.moved:
+            self.board.generate_random_cell()
+            reward = 5
+
+        self.game.draw()
+        if not self.can_move():
+            self.game_over = True
+            # self.game_over_message() Not needed anymore
             self.reset()
+
 
     def game_win_message(self):
         if not self.won:

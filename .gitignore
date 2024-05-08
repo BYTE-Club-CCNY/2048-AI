@@ -1,7 +1,7 @@
 # virtual environment
 env
 venv
-.idea
+.idea/
 # any pycaches
 __pycache__/
 

@@ -110,7 +110,7 @@ class Agent:
         # this eventually brings us to exploitation rather than exploration
         else:
             state_0 = torch.tensor(state, dtype=torch.float)
-            prediction = self.model.predict(state_0)
+            """ prediction = self.model.predict(state_0) """
             move = torch.argmax(prediction).item()
             final_move[move] = 1  # prediction with exploitation once we are not exploring anymore
         return final_move

@@ -27,10 +27,10 @@ class _2048GameAI:
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
 
-    def play(self):
+    def play(self, action):
         self.add_start_cells()
         self.game.draw()
-        #self.game.root.bind('<Key>', self.play_step)
+        self.game.root.after(500, self.play_step, action)
         # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 
@@ -116,9 +116,9 @@ class _2048GameAI:
             self.right()
 
     def play_step(self, action):
-        self._move(action)
-
         self.frame_iteration += 1
+
+        self._move(action)
         reward = 0
         if self.is_game_over():
             reward = -15

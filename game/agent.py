@@ -127,6 +127,7 @@ def train(epochs, board, _game, load_model=False ):  # NOTE merges are treated l
     while True:
         state_old = agent.get_state(game)  # get old state
         final_move = agent.get_action(state_old)  # calculate move based on old state
+        print(final_move)
         reward, done, merges = game.play_step(final_move)  # Perform the move
         state_new = agent.get_state(game)  # retrieve the new state, use for memory
 
@@ -157,3 +158,6 @@ if __name__ == '__main__':
     game = Game(board)
     player = _2048GameAI(board, game)
     train(epochs=100, load_model=True, board=board, _game=game)
+    player.play()
+    
+    

@@ -30,7 +30,7 @@ class _2048GameAI:
     def play(self):
         self.add_start_cells()
         self.game.draw()
-        self.game.root.bind('<Key>', self.handle_key_press)
+        self.game.root.bind('<Key>', self.play_step)
         # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 
@@ -92,6 +92,7 @@ class _2048GameAI:
     def _move(self, action):
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.NONE]
         idx = clock_wise.index(self.direction)
+
         if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
             new_dir = clock_wise[0]
         elif np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
@@ -135,6 +136,8 @@ class _2048GameAI:
             self.game_over = True
             # self.game_over_message() Not needed anymore
             self.reset()
+
+        return reward, self.is_game_over(), self.frame_iteration
 
 
     def game_win_message(self):

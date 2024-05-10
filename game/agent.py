@@ -157,7 +157,9 @@ if __name__ == '__main__':
     board = Board(dim)
     game = Game(board)
     player = _2048GameAI(board, game)
-    train(epochs=100, load_model=True, board=board, _game=game)
     player.play()
+    train(epochs=100, load_model=True, board=board, _game=game)
+    
+    
     
     

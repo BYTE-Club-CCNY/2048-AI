@@ -22,7 +22,7 @@ class _2048GameAI:
         self.keep_playing = False
         self.frame_iteration = 0
         self.max_block = 1
-        self.direction = Direction.DOWN
+        self.direction = Direction.NONE
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
@@ -30,7 +30,7 @@ class _2048GameAI:
     def play(self):
         self.add_start_cells()
         self.game.draw()
-        self.game.root.bind('<Key>', self.play_step)
+        #self.game.root.bind('<Key>', self.play_step)
         # TODO: Edit above bind. no more key pressing, only AI control
         self.game.root.mainloop()
 
@@ -93,24 +93,26 @@ class _2048GameAI:
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.NONE]
         idx = clock_wise.index(self.direction)
 
-        if np.array_equal(action, [1, 0, 0, 0, 0]):  # Action is slide right
+        if np.array_equal(action, [1, 0, 0, 0]):  # Action is slide right
             new_dir = clock_wise[0]
-        elif np.array_equal(action, [0, 1, 0, 0, 0]):  # Action is slide down
+        elif np.array_equal(action, [0, 1, 0, 0]):  # Action is slide down
             new_dir = clock_wise[1]
-        elif np.array_equal(action, [0, 0, 1, 0, 0]):
+        elif np.array_equal(action, [0, 0, 1, 0]):
             new_dir = clock_wise[2]
-        elif np.array_equal(action, [0, 0, 0, 1, 0]):
+        elif np.array_equal(action, [0, 0, 0, 1]):
             new_dir = clock_wise[3]
         else:
             return
 
-        if self.direction == Direction.UP:
+        print(new_dir)
+
+        if new_dir == Direction.UP:
             self.up()
-        elif self.direction == Direction.DOWN:
+        elif new_dir == Direction.DOWN:
             self.down()
-        elif self.direction == Direction.LEFT:
+        elif new_dir == Direction.LEFT:
             self.left()
-        elif self.direction == Direction.RIGHT:
+        elif new_dir == Direction.RIGHT:
             self.right()
 
     def play_step(self, action):

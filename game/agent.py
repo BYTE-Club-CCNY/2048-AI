@@ -124,14 +124,12 @@ def train(epochs, load_model=False ):  # NOTE merges are treated like "scores" i
     board = Board(4)
     game = _2048GameAI(board, Game(board))
     agent = Agent(board=board, game=game)  # agent = Agent(load_model=load_model) later
-    
 
-    while True:
+    while load_model == True:
         
         state_old = agent.get_state(game)  # get old state
         final_move = agent.get_action(state_old)  # calculate move based on old state
         print(final_move)
-        game.play(final_move)
         reward, done, merges = game.play_step(final_move)  # Perform the move
         state_new = agent.get_state(game)  # retrieve the new state, use for memory
         

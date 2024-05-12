@@ -1,6 +1,6 @@
-from game.config.Board import Board
+from config.Board import Board
 from game import _2048GameAI, Direction
-from game.config.GameConfig import Game
+from config.GameConfig import Game
 
 
 def main():

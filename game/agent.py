@@ -125,39 +125,36 @@ def train(epochs, load_model=False ):  # NOTE merges are treated like "scores" i
     game = _2048GameAI(board, Game(board))
     agent = Agent(board=board, game=game)  # agent = Agent(load_model=load_model) later
 
-    while load_model == True:
-        
-        state_old = agent.get_state(game)  # get old state
-        final_move = agent.get_action(state_old)  # calculate move based on old state
-        print(final_move)
-        reward, done, merges = game.play_step(final_move)  # Perform the move
-        state_new = agent.get_state(game)  # retrieve the new state, use for memory
-        
+    ##while load_model == True:
+    for epoch in range(epochs):
+        while not game.is_game_over():
+            state_old = agent.get_state(game)  # get old state
+            final_move = agent.get_action(state_old)  # calculate move based on old state
+            reward, done, merges = game.play_step(final_move)  # Perform the move
+            state_new = agent.get_state(game)  # retrieve the new state, use for memory
+            print(f"Move: {final_move}, Reward: {reward}, Game Over: {done}")
 
-        # training the short memory:
-        agent.train_short_memory(state_old, final_move, reward, state_new, done)
+            # training the short memory:
+            agent.train_short_memory(state_old, final_move, reward, state_new, done)
 
-        # remember:
-        agent.remember(state_old, final_move, reward, state_new, done)
+            # remember:
+            agent.remember(state_old, final_move, reward, state_new, done)
 
-        if done:  # basically if the game is over. we reset game here
-            # training the long memory:
-            self.game.reset()
-            agent.num_games += 1
-            agent.train_long_memory()
-            if merges > record:
-                record = merges
+            if done:  # basically if the game is over. we reset game here
+                # training the long memory:
+                game.reset()
+                agent.num_games += 1
+                agent.train_long_memory()
+                if merges > record:
+                    record = merges
 
-            # TODO: plotting merges (score) on plot
-            plot_merges.append(merges)
-            total_score += merges
-            # mean_score = total_score / agent.num_games
-            plot_max_tile.append(record)
-            plot(plot_merges, plot_max_tile)
-
+                # TODO: plotting merges (score) on plot
+                plot_merges.append(merges)
+                ##total_score += merges
+                # mean_score = total_score / agent.num_games
+                plot_max_tile.append(record)
+                plot(plot_merges, plot_max_tile)
+        if epoch % 10 == 0:
+            agent.model.save(epoch)
 if __name__ == '__main__':
     train(epochs=100, load_model=True)
-    
-    
-    
-    

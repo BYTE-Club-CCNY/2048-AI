@@ -156,5 +156,7 @@ def train(epochs, load_model=False ):  # NOTE merges are treated like "scores" i
                 plot(plot_merges, plot_max_tile)
         if epoch % 10 == 0:
             agent.model.save(epoch)
+
+            
 if __name__ == '__main__':
     train(epochs=100, load_model=True)

@@ -11,7 +11,6 @@ from helper import plot
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LEARNING_RATE = 0.001
-# We can edit these values later but these are common
 
 
 class Agent:
@@ -19,29 +18,22 @@ class Agent:
         self.board = board
         self.game = game
         self.num_games = 0
-        self.epsilon = 0  # control the randomness. represents tradeoff between exploration VS exploitation
-        self.gamma = 0.9  # discount rate, adjust short-term and long-term rewards
-        self.memory = deque(maxlen=MAX_MEMORY)  # This should be self-explanatory...
-        self.model = Linear_QNet(22, 256, 4)  # input size, hidden layer size, output size
+        self.epsilon = 0
+        self.gamma = 0.9
+        self.memory = deque(maxlen=MAX_MEMORY)
+        self.model = Linear_QNet(22, 256, 4)
         self.trainer = QTrainer(self.model, lr=LEARNING_RATE, gamma=self.gamma)
 
-    # TODO: helper functions that identify availability of left, up, down, right movements
-
     def get_state(self, game):
-        # retrieve board state that has all current cells (1D array)
         board_state = np.array(self.board.cells).flatten()
-        # report available moves (the more the better)
         available_moves = np.array([
             self.can_move_right(),
             self.can_move_down(),
             self.can_move_left(),
             self.can_move_up()
         ], dtype=int)
-        # identify the max tile (higher the better)
         max_tile = np.max(self.board.cells)
-        # identify # of empty cells (more the better)
         empty_cells = len(self.board.get_empty_cells())
-        # finally concatenate the state onto np.array
         state = np.concatenate([
             board_state,
             available_moves,
@@ -50,12 +42,11 @@ class Agent:
         return state
 
     def can_move_left(self):
-        # Temporarily simulate a left move
         original_cells = self.board.cells.copy()
         self.board.slide_cells()
         self.board.combine_cells()
         can_move = self.board.moved
-        self.board.cells = original_cells  # Restore original state
+        self.board.cells = original_cells
         return can_move
 
     def can_move_right(self):
@@ -79,11 +70,6 @@ class Agent:
         return can_move
 
     def remember(self, state, action, reward, next_state, done):
-        # state-current state before taking action
-        # action-action taken by agent in the given state (4 directions)
-        # reward-reward received after taking action
-        # next_state-state of env after action is taken
-        # done-indication of game-over, or maybe 2048 is reached.
         self.memory.append((state, action, reward, next_state, done))
 
     def train_short_memory(self, state, action, reward, next_state, done):
@@ -95,68 +81,70 @@ class Agent:
         else:
             mini_sample = self.memory
         states, actions, rewards, next_states, dones = zip(*mini_sample)
-        # we have to unzip the mini sample since it is a long list of tuples. we need to extract each individual value
-
         self.trainer.train_step(states, actions, rewards, next_states, dones)
 
     def get_action(self, state):
-        # actions are either exploration or exploitation (which comes after exploration usually)
         self.epsilon = 80 - self.num_games
         final_move = [0, 0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
-            move = random.randint(0, 3)  # array goes from 0 to 3, so need to make move based on this
+            move = random.randint(0, 3)
             final_move[move] = 1
-        # the more games we have, the less randomness is involved, meaning lower epsilon each game
-        # this eventually brings us to exploitation rather than exploration
         else:
             state_0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state_0)
             move = torch.argmax(prediction).item()
-            final_move[move] = 1  # prediction with exploitation once we are not exploring anymore
+            final_move[move] = 1
         return final_move
 
 
-def train(epochs, load_model=False ):  # NOTE merges are treated like "scores" in snakeAI game
+def train(epochs, load_model=False):
     plot_merges = []
     plot_max_tile = []
     total_merges = 0
     record = 0
     board = Board(4)
-    game = _2048GameAI(board, Game(board))
-    agent = Agent(board=board, game=game)  # agent = Agent(load_model=load_model) later
+    game_ai = _2048GameAI(board, Game(board))
+    agent = Agent(board=board, game=game_ai)
+    game_ai.agent = agent
+    print(999)
 
-    ##while load_model == True:
     for epoch in range(epochs):
-        while not game.is_game_over():
-            state_old = agent.get_state(game)  # get old state
-            final_move = agent.get_action(state_old)  # calculate move based on old state
-            reward, done, merges = game.play_step(final_move)  # Perform the move
-            state_new = agent.get_state(game)  # retrieve the new state, use for memory
-            print(f"Move: {final_move}, Reward: {reward}, Game Over: {done}")
-
-            # training the short memory:
+        print(0)
+        score = 0
+        game_ai.play()
+        print(1)
+        while not game_ai.is_game_over():
+            print(2)
+            state_old = agent.get_state(game_ai)
+            final_move = agent.get_action(state_old)
+            reward, done, frame_iteration = game_ai.play_step(final_move)
+            state_new = agent.get_state(game_ai)
+            print(3)
             agent.train_short_memory(state_old, final_move, reward, state_new, done)
-
-            # remember:
             agent.remember(state_old, final_move, reward, state_new, done)
 
-            if done:  # basically if the game is over. we reset game here
-                # training the long memory:
-                game.reset()
+            if done:
+                print(4)
+                mean_score = total_merges / agent.num_games
                 agent.num_games += 1
                 agent.train_long_memory()
-                if merges > record:
-                    record = merges
-
-                # TODO: plotting merges (score) on plot
-                plot_merges.append(merges)
-                ##total_score += merges
-                # mean_score = total_score / agent.num_games
-                plot_max_tile.append(record)
+                if frame_iteration > record:
+                    record = frame_iteration
+                score = frame_iteration
+                plot_merges.append(score)
+                plot_max_tile.append(mean_score)
+                print(plot_merges)
+                print(plot_max_tile)
+                total_merges += score
                 plot(plot_merges, plot_max_tile)
+                game_ai.reset()
+                print(5)
+
         if epoch % 10 == 0:
             agent.model.save(epoch)
+            print(6)
 
-            
+
 if __name__ == '__main__':
     train(epochs=100, load_model=True)
+

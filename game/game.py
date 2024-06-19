@@ -3,14 +3,12 @@ from config.GameConfig import Game
 from enum import Enum
 import numpy as np
 
-
 class Direction(Enum):
     UP = 1
     DOWN = 2
     LEFT = 3
     RIGHT = 4
     NONE = 5
-
 
 class _2048GameAI:
     def __init__(self, board: Board, game: Game, agent=None):
@@ -31,17 +29,7 @@ class _2048GameAI:
     def play(self):
         self.add_start_cells()
         self.game.draw()
-        self.game.root.after(100, self.play_step_loop)
-        self.game.root.mainloop()
-        # self.game.root.after(100, self.play_step_loop)
-
-    def play_step_loop(self):
-        if not self.is_game_over():
-            action = self.get_next_action()
-            reward, done, frame_iteration = self.play_step(action)
-            self.game.root.after(100, self.play_step_loop)
-        else:
-            pass
+        self.game.root.update()  # Update the Tkinter GUI
 
     def play_step(self, action):
         self._move(action)
@@ -52,6 +40,7 @@ class _2048GameAI:
             return reward, self.is_game_over(), self.frame_iteration
 
         self.game.draw()
+        self.game.root.update()  # Update the Tkinter GUI
         if self.board.found_2048():
             self.game_win_message()
 
@@ -60,9 +49,9 @@ class _2048GameAI:
             reward = 5
 
         self.game.draw()
+        self.game.root.update()  # Update the Tkinter GUI
         if not self.can_move():
             self.game_over = True
-            self.reset()
 
         return reward, self.is_game_over(), self.frame_iteration
 
@@ -135,3 +124,4 @@ class _2048GameAI:
         self.left()
         self.board.reverse()
         self.board.transpose()
+

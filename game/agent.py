@@ -96,49 +96,44 @@ class Agent:
             final_move[move] = 1
         return final_move
 
-
 def train(epochs, load_model=False):
-    plot_merges = []
-    plot_max_tile = []
-    total_merges = 0
+    plot_scores = []
+    plot_mean_scores = []
+    total_score = 0
     record = 0
     board = Board(4)
     game_ai = _2048GameAI(board, Game(board))
     agent = Agent(board=board, game=game_ai)
     game_ai.agent = agent
-    print(999)
+
+    game_ai.play()  # Initialize and draw the game
 
     for epoch in range(epochs):
-        print(0)
         score = 0
-        game_ai.play()
-        print(1)
+        game_ai.reset()  # Ensure the game is reset at the start of each epoch
+
         while not game_ai.is_game_over():
-            print(2)
             state_old = agent.get_state(game_ai)
             final_move = agent.get_action(state_old)
             reward, done, frame_iteration = game_ai.play_step(final_move)
             state_new = agent.get_state(game_ai)
-            print(3)
+
             agent.train_short_memory(state_old, final_move, reward, state_new, done)
             agent.remember(state_old, final_move, reward, state_new, done)
 
             if done:
-                print(4)
-                mean_score = total_merges / agent.num_games
                 agent.num_games += 1
                 agent.train_long_memory()
                 if frame_iteration > record:
                     record = frame_iteration
+
                 score = frame_iteration
-                plot_merges.append(score)
-                plot_max_tile.append(mean_score)
-                print(plot_merges)
-                print(plot_max_tile)
-                total_merges += score
-                plot(plot_merges, plot_max_tile)
+                plot_scores.append(score)
+                total_score += score
+                mean_score = total_score / agent.num_games
+                plot_mean_scores.append(mean_score)
+                plot(plot_scores, plot_mean_scores)
                 game_ai.reset()
-                print(5)
 
         if epoch % 10 == 0:
             agent.model.save(epoch)

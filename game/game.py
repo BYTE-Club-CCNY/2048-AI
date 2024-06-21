@@ -52,7 +52,7 @@ class _2048GameAI:
         self.game.root.update()  # Update the Tkinter GUI
         if not self.can_move():
             self.game_over = True
-
+        print(reward)
         return reward, self.is_game_over(), self.frame_iteration
 
     def get_next_action(self):

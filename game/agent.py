@@ -96,6 +96,7 @@ class Agent:
             final_move[move] = 1
         return final_move
 
+
 def train(epochs, load_model=False):
     plot_scores = []
     plot_mean_scores = []
@@ -105,13 +106,11 @@ def train(epochs, load_model=False):
     game_ai = _2048GameAI(board, Game(board))
     agent = Agent(board=board, game=game_ai)
     game_ai.agent = agent
-
     game_ai.play()  # Initialize and draw the game
 
     for epoch in range(epochs):
-        score = 0
         game_ai.reset()  # Ensure the game is reset at the start of each epoch
-
+        score = 0  # Initialize score for the current game
         while not game_ai.is_game_over():
             state_old = agent.get_state(game_ai)
             final_move = agent.get_action(state_old)
@@ -121,19 +120,23 @@ def train(epochs, load_model=False):
             agent.train_short_memory(state_old, final_move, reward, state_new, done)
             agent.remember(state_old, final_move, reward, state_new, done)
 
+            # Accumulate score
+            score += reward
+
             if done:
+                frame_iteration = 0
                 agent.num_games += 1
                 agent.train_long_memory()
+
                 if frame_iteration > record:
                     record = frame_iteration
 
-                score = frame_iteration
                 plot_scores.append(score)
                 total_score += score
                 mean_score = total_score / agent.num_games
                 plot_mean_scores.append(mean_score)
                 plot(plot_scores, plot_mean_scores)
-                game_ai.reset()
+                break
 
         if epoch % 10 == 0:
             agent.model.save(epoch)

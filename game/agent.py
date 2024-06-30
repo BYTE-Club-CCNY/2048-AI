@@ -23,6 +23,7 @@ class Agent:
         self.memory = deque(maxlen=MAX_MEMORY)
         self.model = Linear_QNet(22, 256, 4)
         self.trainer = QTrainer(self.model, lr=LEARNING_RATE, gamma=self.gamma)
+        self.stagnation_threshold = 10  # Threshold to reset epsilon after stagnation
 
     def get_state(self, game):
         board_state = np.array(self.board.cells).flatten()
@@ -84,7 +85,11 @@ class Agent:
         self.trainer.train_step(states, actions, rewards, next_states, dones)
 
     def get_action(self, state):
-        self.epsilon = 80 - self.num_games
+        if self.game.stagnation_count >= self.stagnation_threshold:
+            self.epsilon = 200  # Temporarily increase epsilon to encourage exploration
+        else:
+            self.epsilon = max(10, 80 - self.num_games)  # Normal epsilon decay
+
         final_move = [0, 0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0, 3)

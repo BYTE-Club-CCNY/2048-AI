@@ -2,6 +2,8 @@ from config.Board import Board
 from config.GameConfig import Game
 from enum import Enum
 import numpy as np
+import random
+
 
 class Direction(Enum):
     UP = 1
@@ -9,6 +11,7 @@ class Direction(Enum):
     LEFT = 3
     RIGHT = 4
     NONE = 5
+
 
 class _2048GameAI:
     def __init__(self, board: Board, game: Game, agent=None):
@@ -22,6 +25,8 @@ class _2048GameAI:
         self.frame_iteration = 0
         self.max_block = 1
         self.direction = Direction.NONE
+        self.stagnation_count = 0  # Track the number of consecutive moves with no change
+        self.max_stagnation = 10
 
     def is_game_over(self):
         return self.game_over or (self.won and not self.keep_playing)
@@ -32,11 +37,12 @@ class _2048GameAI:
         self.game.root.update()  # Update the Tkinter GUI
 
     def play_step(self, action):
+        prev_board = self.board.cells.copy()  # Copy the board state before the move
         self._move(action)
         self.frame_iteration += 1
         reward = 0
         if self.is_game_over():
-            reward = -15
+            reward = -10
             return reward, self.is_game_over(), self.frame_iteration
 
         self.game.draw()
@@ -46,7 +52,14 @@ class _2048GameAI:
 
         if self.board.moved:
             self.board.generate_random_cell()
-            reward = 5
+            reward = 1
+            self.stagnation_count = 0  # Reset stagnation count if there was a move
+        else:
+            self.stagnation_count += 1
+
+        if self.stagnation_count >= self.max_stagnation:
+            self.reset()  # Reset the game if stagnation is detected
+            reward = -10  # Penalize for getting stuck
 
         self.game.draw()
         self.game.root.update()  # Update the Tkinter GUI
@@ -75,10 +88,8 @@ class _2048GameAI:
             new_dir = clock_wise[1]
         elif np.array_equal(action, [0, 0, 1, 0]):
             new_dir = clock_wise[2]
-        elif np.array_equal(action, [0, 0, 0, 1]):
+        else:  # np.array_equal(action, [0, 0, 0, 1])
             new_dir = clock_wise[3]
-        else:
-            return
 
         if new_dir == Direction.UP:
             self.up()

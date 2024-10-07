@@ -1,21 +1,20 @@
 # 2048-AI
+A 2048 AI agent implemented with Q-learning that is trained off its 2048 game environment, built by our group of three engineers at BYTE! </br> 
+After training, the agent proceeds to make more reward-inducing moves in order to get closer to winning the game.
 
-## Running 2048
-
-I have copied over the source code for a simple 2048 game.
-To run the game, make sure your python installation has TKinter support.
-
+## How to run:
 1. Navigate to the `game` directory.
 2. Run `python main.py`.
 
-## TODO
+# Contributions
+Big shoutout to our three contributors: Jay, Abrar, and Rafid! </br>
+<a href="https://github.com/jaynopponep">
+  <img src="https://github.com/jaynopponep.png?size=100" width="100" height="100" style="border-radius: 50%;" alt="Jay Noppone P" />
+</a>
+<a href="https://github.com/dddictionary">
+  <img src="https://github.com/dddictionary.png?size=100" width="100" height="100" style="border-radius: 50%;" alt="William Ng" />
+</a>
+<a href="https://github.com/rafi-d-z">
+  <img src="https://github.com/rafi-d-z.png?size=100" width="100" height="100" style="border-radius: 50%;" alt="Matthew Munoz" />
+</a>
 
-- Building model.py
-- Making sure agent.py runs well with model.py after building model
-- Testing and plotting data
-- Fine-tuning variables in agent for better performance
-- Implementing search algorithms so AI is able to discover best paths to achieve 2048 or higher
-
-Feel free to add more to the README with any TODO's or documentation.
-
-:robot:
